@@ -13,8 +13,12 @@ app.get("/musicians", async (req, res) => {
 });
 
 app.get("/musicians/:id", async (req, res) => {
-  const foundMusician = await Musician.findByPk(req.params.id);
-  res.json(foundMusician);
+  try {
+    const foundMusician = await Musician.findByPk(req.params.id);
+    res.json(foundMusician);
+  } catch (error) {
+    throw new Error("Musician not found");
+  }
 });
 
 module.exports = app;

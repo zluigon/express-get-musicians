@@ -30,4 +30,23 @@ describe("./musicians endpoint", () => {
       })
     );
   });
+
+  test("testing musician endpoint by id statusCode", async () => {
+    const response = await request(app).get("/musicians/:id");
+    expect(response.statusCode).toBe(200);
+  });
+
+  test("testing musician id endpoint response", async () => {
+    const response = request(app).get("/musicians/2");
+    const responseData = JSON.parse((await response).text);
+
+    expect(responseData).toEqual(
+      expect.objectContaining({
+        id: 2,
+        name: "Drake",
+        instrument: "Voice",
+        bandId: null,
+      })
+    );
+  });
 });
