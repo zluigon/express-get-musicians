@@ -12,15 +12,11 @@ const { seedMusician } = require("./seedData");
 describe("./musicians endpoint", () => {
   // Write your tests here
 
-  test("testing musicians endpoint statusCode", async () => {
-    const response = await request(app).get("/musicians");
-    expect(response.statusCode).toBe(200);
-  });
-
-  test("testing musicians endpoint response", async () => {
+  test("GET", async () => {
     const response = await request(app).get("/musicians");
     const responseData = JSON.parse(response.text);
 
+    expect(response.statusCode).toBe(200);
     expect(responseData[0]).toEqual(
       expect.objectContaining({
         id: 1,
@@ -31,19 +27,62 @@ describe("./musicians endpoint", () => {
     );
   });
 
-  test("testing musician endpoint by id statusCode", async () => {
-    const response = await request(app).get("/musicians/:id");
+  test("GET /:id", async () => {
+    const response = await request(app).get("/musicians/2");
+    const responseData = JSON.parse(response.text);
+
     expect(response.statusCode).toBe(200);
-  });
-
-  test("testing musician id endpoint response", async () => {
-    const response = request(app).get("/musicians/2");
-    const responseData = JSON.parse((await response).text);
-
     expect(responseData).toEqual(
       expect.objectContaining({
         id: 2,
         name: "Drake",
+        instrument: "Voice",
+        bandId: null,
+      })
+    );
+  });
+
+  test("POST", async () => {
+    const response = await request(app)
+      .post("/musicians")
+      .send({ name: "Ronnie Radke", instrument: "Voice" });
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toEqual(
+      expect.objectContaining({
+        name: "Ronnie Radke",
+        instrument: "Voice",
+      })
+    );
+  });
+
+  test("PUT", async () => {
+    const response = await request(app)
+      .put("/musicians/4")
+      .send({ name: "Corey Taylor" });
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toEqual(
+      expect.objectContaining({
+        id: 4,
+        name: "Corey Taylor",
+        instrument: "Voice",
+        bandId: null,
+      })
+    );
+  });
+
+  test("DELETE", async () => {
+    const response = await request(app).delete("/musicians/4");
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toEqual(
+      expect.objectContaining({
+        id: 4,
+        name: "Corey Taylor",
         instrument: "Voice",
         bandId: null,
       })
