@@ -88,6 +88,16 @@ describe("./musicians endpoint", () => {
       })
     );
   });
+
+  test("POST w/ missing fields", async () => {
+    const response = await request(app)
+      .post("/musicians")
+      .send({ name: "Serj Tankian", instrument: "" });
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toHaveProperty("errors");
+  });
 });
 
 describe("./bands endpoint", () => {
