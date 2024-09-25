@@ -89,3 +89,21 @@ describe("./musicians endpoint", () => {
     );
   });
 });
+
+describe("./bands endpoint", () => {
+  test("GET", async () => {
+    const response = await request(app).get("/bands");
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(Array.isArray(responseData)).toBeTruthy();
+  });
+
+  test("GET /:id", async () => {
+    const response = await request(app).get("/bands/1");
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toHaveProperty("id");
+  });
+});
