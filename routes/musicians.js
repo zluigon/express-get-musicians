@@ -31,6 +31,7 @@ router.post(
   "/",
   [
     check("name").not().isEmpty().trim(),
+    check("name").trim().isLength({ min: 2, max: 20 }),
     check("instrument").not().isEmpty().trim(),
   ],
   async (req, res, next) => {

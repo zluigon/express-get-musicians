@@ -98,6 +98,16 @@ describe("./musicians endpoint", () => {
     expect(response.statusCode).toBe(200);
     expect(responseData).toHaveProperty("errors");
   });
+
+  test("POST w/ invalid length", async () => {
+    const response = await request(app)
+      .post("/musicians")
+      .send({ name: "Super Long Ridiculous Name", instrument: "Voice" });
+    const responseData = JSON.parse(response.text);
+
+    expect(response.statusCode).toBe(200);
+    expect(responseData).toHaveProperty("errors");
+  });
 });
 
 describe("./bands endpoint", () => {
